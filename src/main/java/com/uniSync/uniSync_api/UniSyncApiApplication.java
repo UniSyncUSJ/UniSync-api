@@ -8,6 +8,7 @@ public class UniSyncApiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(UniSyncApiApplication.class, args);
-	}
+		System.out.println("Hello!");
 
+	}
 }

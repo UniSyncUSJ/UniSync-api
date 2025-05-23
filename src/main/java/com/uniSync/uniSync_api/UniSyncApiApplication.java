@@ -2,6 +2,9 @@ package com.uniSync.uniSync_api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 
 @SpringBootApplication
 public class UniSyncApiApplication {
@@ -11,4 +14,11 @@ public class UniSyncApiApplication {
 		System.out.println("Hello!");
 
 	}
+
+	@GetMapping("/")
+	public String hello() {
+		return "Hello from UniSync!";
+	}
+
+
 }

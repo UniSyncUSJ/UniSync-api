@@ -22,7 +22,7 @@ public class User {
     private UserRole role;
     private String profilePicURL;
     private String phoneNumber;
-    private LocalDateTime createdAt;
+    private LocalDateTime createdOn;
     private LocalDateTime lastUpdate;
     private LocalDateTime lastLogin;
 
@@ -38,7 +38,7 @@ public class User {
         setRole(role);
         setProfilePicURL(profilePicURL);
         setPhoneNumber(phoneNumber);
-        this.createdAt = LocalDateTime.now();
+        this.createdOn = LocalDateTime.now();
         setLastUpdate();
         setLastLogin();
     }
@@ -51,7 +51,7 @@ public class User {
         setRole(role);
         setProfilePicURL(null); //default profile pic url;
         setPhoneNumber(phoneNumber);
-        this.createdAt = LocalDateTime.now();
+        this.createdOn = LocalDateTime.now();
         setLastUpdate();
         setLastLogin();
     }
@@ -125,8 +125,8 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
     }
 
     public void setLastUpdate() {

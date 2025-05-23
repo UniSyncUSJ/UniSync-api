@@ -45,7 +45,7 @@ public class Admin{
     }
 
     public void setCreatedOn() {
-        this.createdOn = user.getCreatedAt();
+        this.createdOn = user.getCreatedOn();
     }
 
     public LocalDateTime getLastAction() {

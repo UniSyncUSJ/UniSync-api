@@ -1,7 +1,6 @@
 package com.uniSync.uniSync_api.Model;
 
 import com.uniSync.uniSync_api.Common.AdminType;
-import com.uniSync.uniSync_api.Common.UserRole;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -59,8 +58,8 @@ public class Admin{
 
     // Constructors
     public Admin(User user, AdminType adminType) {
-        this.user = user;
-        this.adminType = adminType;
+        setUser(user);
+        setAdminType(adminType);
         setCreatedOn();
         setLastAction();
     }

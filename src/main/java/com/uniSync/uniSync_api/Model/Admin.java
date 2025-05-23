@@ -1,15 +1,19 @@
 package com.uniSync.uniSync_api.Model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.uniSync.uniSync_api.Common.AdminType;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "admins")
-public class Admin extends User {
+public class Admin{
 
-    private String role = "ADMIN";
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column
-    private String adminType;
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+    private AdminType adminType;
 }

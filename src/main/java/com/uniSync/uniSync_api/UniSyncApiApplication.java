@@ -1,9 +1,7 @@
 package com.uniSync.uniSync_api;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+
 
 
 @SpringBootApplication
@@ -11,14 +9,7 @@ public class UniSyncApiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(UniSyncApiApplication.class, args);
-		System.out.println("Hello!");
-
+		System.out.println("Application is running on port: 8080");
 	}
-
-	@GetMapping("/")
-	public String hello() {
-		return "Hello from UniSync!";
-	}
-
 
 }

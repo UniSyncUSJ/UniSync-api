@@ -15,8 +15,15 @@ public class Department {
 
     private String name;
 
-    @ManyToMany(mappedBy = "department")
+    @ManyToMany(mappedBy = "departments")
     private Set<Student> students = new HashSet<Student>();
+
+    @ManyToOne
+    @JoinColumn(
+            name = "faculty_id",
+            nullable = false
+    )
+    private Faculty faculty;
 
     // Getters and Setters
     public long getId() {
@@ -39,11 +46,19 @@ public class Department {
         this.students = students;
     }
 
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+    }
+
     // Constructors
     public Department() {}
 
-    public Department(String name, Set<Student> students) {
+    public Department(String name,Faculty faculty) {
         setName(name);
-        setStudents(students);
+        setFaculty(faculty);
     }
 }

@@ -3,8 +3,6 @@ package com.uniSync.uniSync_api.Model;
 import com.uniSync.uniSync_api.Common.AdminType;
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "admins")
 public class Admin{
@@ -19,9 +17,6 @@ public class Admin{
 
     private AdminType adminType;
 
-    private LocalDateTime createdOn;
-
-    private LocalDateTime lastAction;
 
     // Getters and Setters
     public User getUser() {
@@ -40,29 +35,12 @@ public class Admin{
         this.adminType = adminType;
     }
 
-    public LocalDateTime getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn() {
-        this.createdOn = user.getCreatedOn();
-    }
-
-    public LocalDateTime getLastAction() {
-        return lastAction;
-    }
-
-    public void setLastAction() {
-        this.lastAction = user.getLastUpdate();
-    }
 
     // Constructors
+    public Admin(){ }
+
     public Admin(User user, AdminType adminType) {
         setUser(user);
         setAdminType(adminType);
-        setCreatedOn();
-        setLastAction();
     }
-
-    public Admin(){ }
 }

@@ -1,8 +1,6 @@
 package com.uniSync.uniSync_api.Model;
 
 import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,8 +24,12 @@ public class Student {
     )
     private Set<Department> departments = new HashSet<Department>();
 
-    private LocalDateTime createdOn;
-    private LocalDateTime lastAction;
+    @ManyToOne
+    @JoinColumn(
+            name = "faculty_id",
+            nullable = false
+    )
+    private Faculty faculty;
 
     // Getters and Setters
     public long getId() {
@@ -49,24 +51,17 @@ public class Student {
     public void setDepartments(Set<Department> departments) {
         this.departments = departments;
     }
-
-    public LocalDateTime getCreatedOn() {
-        return createdOn;
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
     }
 
-    public void setCreatedOn() {
-        this.createdOn = user.getCreatedOn();
-    }
-
-    public LocalDateTime getLastAction() {
-        return lastAction;
-    }
-
-    public void setLastAction() {
-        this.lastAction = user.getLastUpdate();
-    }
 
     // Constructors
     public Student() { }
 
+    public Student(Set<Department> departments, User user, Faculty faculty) {
+        setUser(user);
+        setDepartments(departments);
+        setFaculty(faculty);
+    }
 }

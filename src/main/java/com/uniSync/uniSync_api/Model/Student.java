@@ -31,6 +31,13 @@ public class Student {
     )
     private Faculty faculty;
 
+    @ManyToOne
+    @JoinColumn(
+            name = "society_id",
+            nullable = false
+    )
+    private Society society;
+
     // Getters and Setters
     public long getId() {
         return id;

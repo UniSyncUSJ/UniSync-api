@@ -6,17 +6,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Faculty {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
+@DiscriminatorValue("FACULTY")
+@Table(name = "faculties")
+public class Faculty extends AdministerEntity {
+
+    protected String name;
 
     @OneToMany(mappedBy = "faculty", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Student> students = new HashSet<>();
+    protected Set<Student> students = new HashSet<Student>();
 
-    @OneToMany(mappedBy = "faculty", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Department> departments;
+    @OneToMany(mappedBy = "faculty")
+    private Set<Department> departments = new HashSet<Department>();
 
     //Setters & Getters
     public Long getId() {

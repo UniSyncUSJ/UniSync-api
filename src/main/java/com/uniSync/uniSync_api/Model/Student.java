@@ -18,7 +18,7 @@ public class Student {
 
     @ManyToMany
     @JoinTable(
-            name = "student_departments",
+            name = "student_department",
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "department_id")
     )

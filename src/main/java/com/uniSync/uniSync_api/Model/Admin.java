@@ -17,6 +17,9 @@ public class Admin{
 
     private AdminType adminType;
 
+    @OneToOne(mappedBy = "admin")
+    private AdministerEntity administerEntity;
+
 
     // Getters and Setters
     public User getUser() {
@@ -43,4 +46,13 @@ public class Admin{
         setUser(user);
         setAdminType(adminType);
     }
+
+//    public String getMappedString(){
+//        String mappedStr = null;
+//
+//        switch (adminType){
+//            case ""
+//        }
+//    }
+
 }

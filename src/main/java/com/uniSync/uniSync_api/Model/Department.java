@@ -6,17 +6,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@DiscriminatorValue("DEPARTMENT")
 @Table(name = "departments")
-public class Department {
+public class Department extends AdministerEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    private String name;
-
-    @ManyToMany(mappedBy = "departments")
-    private Set<Student> students = new HashSet<Student>();
+    protected String name;
 
     @ManyToOne
     @JoinColumn(
@@ -24,6 +18,10 @@ public class Department {
             nullable = false
     )
     private Faculty faculty;
+
+
+    @ManyToMany(mappedBy = "departments")
+    protected Set<Student> students = new HashSet<Student>();
 
     // Getters and Setters
     public long getId() {

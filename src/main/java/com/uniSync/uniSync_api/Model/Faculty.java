@@ -11,6 +11,7 @@ public class Faculty {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String description;
 
     @OneToMany(mappedBy = "faculty", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Student> students = new HashSet<>();
@@ -29,6 +30,14 @@ public class Faculty {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Set<Student> getStudents() {
@@ -50,7 +59,8 @@ public class Faculty {
     // Constrcutors
     public Faculty() {}
 
-    public Faculty(String name) {
+    public Faculty(String name,String description) {
         setName(name);
+        setDescription(description);
     }
 }

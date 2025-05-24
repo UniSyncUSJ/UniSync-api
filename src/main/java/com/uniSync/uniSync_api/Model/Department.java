@@ -14,6 +14,7 @@ public class Department {
     private long id;
 
     private String name;
+    private String description;
 
     @ManyToMany(mappedBy = "departments")
     private Set<Student> students = new HashSet<Student>();
@@ -38,6 +39,14 @@ public class Department {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Set<Student> getStudents() {
         return students;
     }
@@ -57,8 +66,9 @@ public class Department {
     // Constructors
     public Department() {}
 
-    public Department(String name,Faculty faculty) {
+    public Department(String name, String description, Faculty faculty) {
         setName(name);
+        setDescription(description);
         setFaculty(faculty);
     }
 }

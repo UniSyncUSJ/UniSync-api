@@ -3,7 +3,6 @@ package com.uniSync.uniSync_api.Model;
 import com.uniSync.uniSync_api.Common.UserRole;
 import com.uniSync.uniSync_api.utils.HashUtil;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 

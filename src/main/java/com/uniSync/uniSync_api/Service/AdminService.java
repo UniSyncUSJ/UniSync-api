@@ -1,6 +1,7 @@
 package com.uniSync.uniSync_api.Service;
 
 import com.uniSync.uniSync_api.Common.AdminType;
+import com.uniSync.uniSync_api.Exceptions.InvalidAdminException;
 import com.uniSync.uniSync_api.Model.Admin;
 import com.uniSync.uniSync_api.Model.AdministerEntity;
 import com.uniSync.uniSync_api.Model.Department;
@@ -37,10 +38,14 @@ public class AdminService {
     @Transactional
     public Department createDepartmentWithAdminAndFaculty(Department department, Admin admin, Faculty faculty) {
         department.setFaculty(faculty);
-        if(admin.getAdminType().equals(AdminType.DEPARTMENT_ADMIN)){
-            department.setAdmin(admin);
-        }else{
-            System.out.println("Incorrect Admin type");
+        try{
+            if(admin.getAdminType().equals(AdminType.DEPARTMENT_ADMIN)){
+                department.setAdmin(admin);
+            }else{
+                throw new InvalidAdminException("Invalid Admin type");
+            }
+        }catch(InvalidAdminException e){
+            e.printStackTrace();
         }
         return departmentRepository.save(department);
     }
@@ -48,10 +53,14 @@ public class AdminService {
     // Create a Faculty and link it to an Admin
     @Transactional
     public Faculty createFacultyWithAdmin(Faculty faculty, Admin admin) {
-        if(admin.getAdminType().equals(AdminType.FACULTY_ADMIN)){
-            faculty.setAdmin(admin); // From AdministerEntity superclass
-        }else{
-            System.out.println("Incorrect Admin type");
+        try{
+            if(admin.getAdminType().equals(AdminType.FACULTY_ADMIN)){
+                faculty.setAdmin(admin);
+            }else{
+                throw new InvalidAdminException("Invalid Admin typr");
+            }
+        }catch(InvalidAdminException e){
+            e.printStackTrace();
         }
 
         return facultyRepository.save(faculty);

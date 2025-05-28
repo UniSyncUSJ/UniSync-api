@@ -10,7 +10,7 @@ public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -18,7 +18,7 @@ public class Student {
 
     @ManyToMany
     @JoinTable(
-            name = "student_departments",
+            name = "student_department",
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "department_id")
     )
@@ -30,6 +30,14 @@ public class Student {
             nullable = false
     )
     private Faculty faculty;
+
+    @ManyToMany
+    @JoinTable(
+            name = "student_society",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "society_id")
+    )
+    private Set<Society> societies;
 
     // Getters and Setters
     public long getId() {

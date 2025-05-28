@@ -39,6 +39,14 @@ public class Student {
     )
     private Set<Society> societies;
 
+    @ManyToMany
+    @JoinTable(
+            name = "student_events",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "event_id")
+    )
+    private Set<Event> events = new HashSet<>();
+
     // Getters and Setters
     public long getId() {
         return id;
@@ -63,6 +71,25 @@ public class Student {
         this.faculty = faculty;
     }
 
+    public Set<Society> getSocieties() {
+        return societies;
+    }
+
+    public void setSocieties(Set<Society> societies) {
+        this.societies = societies;
+    }
+
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public Set<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(Set<Event> events) {
+        this.events = events;
+    }
 
     // Constructors
     public Student() { }

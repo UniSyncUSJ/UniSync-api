@@ -6,13 +6,14 @@ import com.uniSync.uniSync_api.Model.Admin;
 import com.uniSync.uniSync_api.Model.Department;
 import com.uniSync.uniSync_api.Model.Faculty;
 import com.uniSync.uniSync_api.Model.User;
+import com.uniSync.uniSync_api.Repository.AdminRepository;
 import com.uniSync.uniSync_api.Repository.UserRepository;
 import com.uniSync.uniSync_api.Service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/test")
@@ -24,37 +25,65 @@ public class TestController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping("/create-admin-department")
-    public ResponseEntity<String> createAdminAndDepartment() {
+    @Autowired
+    private AdminRepository adminRepository;
 
-        User user = new User("John","Doe","johndoe@example.com","john123", UserRole.ADMIN,"0744561619");
+    @PostMapping("/create-admins")
+    public ResponseEntity<String> createAdmin() {
+        User user = new User("John", "Doe", "johndoe@example.com", "john123", UserRole.ADMIN, "0744561619");
         user = userRepository.save(user);
 
-        if (user == null) {
-            return ResponseEntity.badRequest().body("User with ID 1 not found");
+        User user2 = new User("John","Adams","johnadams@example.com","john123",UserRole.ADMIN,"0784652312");
+        user2 = userRepository.save(user2);
+
+        Admin admin1 = new Admin();
+        admin1.setUser(user);
+        admin1.setAdminType(AdminType.DEPARTMENT_ADMIN);
+        admin1 = adminService.createAdmin(admin1);
+
+        Admin admin2 = new Admin();
+        admin2.setUser(user2);
+        admin2.setAdminType(AdminType.FACULTY_ADMIN);
+        admin2 = adminService.createAdmin(admin2);
+
+        return ResponseEntity.ok("Admins created successfully with ID: \n" + admin1.getUser().getId()+"\n"+admin2.getUser().getId());
+    }
+
+    @PostMapping("/create-department-with-admin")
+    public ResponseEntity<String> createDepartmentWithAdmin(@RequestParam Long facultyAdminId, @RequestParam Long deptAdminId) {
+        Optional<Admin> optionalAdmin = adminRepository.findById(deptAdminId);
+        if (optionalAdmin.isEmpty()) {
+            return ResponseEntity.badRequest().body("Admin with ID " + deptAdminId + " not found.");
         }
 
-        // Create Admin linked to User
-        Admin admin = new Admin();
-        admin.setUser(user);
-        admin.setAdminType(AdminType.DEPARTMENT_ADMIN);
-        admin = adminService.createAdmin(admin);
+        Admin deptAdmin = optionalAdmin.get();
 
-        // Create Faculty (no admin linked here for simplicity)
+        Optional<Admin> opAdmin2 = adminRepository.findById(facultyAdminId);
+        if (opAdmin2.isEmpty()) {
+            return ResponseEntity.badRequest().body("Admin with ID " + facultyAdminId+ " not found.");
+        }
+        Admin facultyAdmin = opAdmin2.get();
+
         Faculty faculty = new Faculty();
         faculty.setName("Science Faculty");
+        faculty = adminService.createFacultyWithAdmin(faculty, facultyAdmin);
 
-        // Save Faculty (you might want a FacultyService or repo, here just quick)
-        faculty = adminService.createFacultyWithAdmin(faculty, admin);
-
-        // Create Department linked to Faculty and Admin
         Department department = new Department();
         department.setName("Computer Science");
         department.setFaculty(faculty);
-        department.setAdmin(admin);
 
-        department = adminService.createDepartmentWithAdminAndFaculty(department, admin, faculty);
+//        if(deptAdmin.getAdminType().equals(AdminType.DEPARTMENT_ADMIN)){
+//            department.setAdmin(deptAdmin);
+//        }else{
+//            System.out.println("Incorrect Admin type");
+//        }
 
-        return ResponseEntity.ok("Admin and Department created successfully with ID: " + department.getId());
+
+        department = adminService.createDepartmentWithAdminAndFaculty(department, deptAdmin, faculty);
+
+        return ResponseEntity.ok("Department created under Admin ID: " + deptAdmin.getUser().getId() +
+                ", Department ID: " + department.getId());
     }
+
 }
+

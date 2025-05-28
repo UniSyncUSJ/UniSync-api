@@ -47,12 +47,5 @@ public class Admin{
         setAdminType(adminType);
     }
 
-//    public String getMappedString(){
-//        String mappedStr = null;
-//
-//        switch (adminType){
-//            case ""
-//        }
-//    }
 
 }

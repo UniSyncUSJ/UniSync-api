@@ -31,6 +31,14 @@ public class Student {
     )
     private Faculty faculty;
 
+    @ManyToMany
+    @JoinTable(
+            name = "student_society",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "society_id")
+    )
+    private Set<Society> societies;
+
     // Getters and Setters
     public long getId() {
         return id;

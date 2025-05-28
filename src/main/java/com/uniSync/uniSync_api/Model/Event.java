@@ -23,7 +23,7 @@ public class Event {
     private LocalDateTime eventDate;
     private String coverImgURL;
     private String eventLink;
-    private String organizedBy;
+    private Long organizedBy;
 
     @ManyToMany
     private Set<Student> students = new HashSet<>();
@@ -105,17 +105,17 @@ public class Event {
         this.eventLink = eventLink;
     }
 
-    public String getOrganizedBy() {
+    public Long getOrganizedBy() {
         return organizedBy;
     }
 
-    public void setOrganizedBy(String organizedBy) {
+    public void setOrganizedBy(Long organizedBy) {
         this.organizedBy = organizedBy;
     }
 
     // Constructors
     public Event(String eventName, String description, String venue, EventType eventType, EventCategory eventCategory,
-                 LocalDateTime eventDate, String coverImgURL, String eventLink, String organizedBy) {
+                 LocalDateTime eventDate, String coverImgURL, String eventLink, Long organizedBy) {
         setEventName(eventName);
         setDescription(description);
         setVenue(venue);

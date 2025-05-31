@@ -16,6 +16,8 @@ public class Student {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    private int batchYear;
+
     @ManyToMany
     @JoinTable(
             name = "student_department",
@@ -60,6 +62,14 @@ public class Student {
         this.user = user;
     }
 
+    public int getBatchYear() {
+        return batchYear;
+    }
+
+    public void setBatchYear(int batchYear) {
+        this.batchYear = batchYear;
+    }
+
     public Set<Department> getDepartments() {
         return departments;
     }
@@ -94,9 +104,10 @@ public class Student {
     // Constructors
     public Student() { }
 
-    public Student(Set<Department> departments, User user, Faculty faculty) {
+    public Student(Set<Department> departments, User user, Faculty faculty, int batchYear) {
         setUser(user);
         setDepartments(departments);
         setFaculty(faculty);
+        setBatchYear(batchYear);
     }
 }

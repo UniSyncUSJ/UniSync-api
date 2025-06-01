@@ -8,7 +8,7 @@ import com.uniSync.uniSync_api.Model.Faculty;
 import com.uniSync.uniSync_api.Model.User;
 import com.uniSync.uniSync_api.Repository.AdminRepository;
 import com.uniSync.uniSync_api.Repository.UserRepository;
-import com.uniSync.uniSync_api.Service.AdminService;
+import com.uniSync.uniSync_api.Service.AdminServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +20,7 @@ import java.util.Optional;
 public class TestController {
 
     @Autowired
-    private AdminService adminService;
+    private AdminServiceImpl adminService;
 
     @Autowired
     private UserRepository userRepository;

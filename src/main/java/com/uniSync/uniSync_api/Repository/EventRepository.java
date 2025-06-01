@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Repository
@@ -15,7 +16,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     Set<Event> findAllByEventCategory(EventCategory category);
     Set<Event> findAllByOrganizedBy(Long organizedBy);
     Set<Event> findAllByEventNameContaining(String keyword); // For search
-    Set<Event> findAllByEventDateBetween(LocalDate start, LocalDate end);
+    Set<Event> findAllByEventDateBetween(LocalDateTime start, LocalDateTime end);
     Set<Event> findAllByEventType(EventType eventType);
 
 }

@@ -12,11 +12,13 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
-public class AdminServiceImpl {
+public class AdminServiceImpl implements AdminService{
 
     @Autowired
     private AdminRepository adminRepository;
@@ -79,5 +81,12 @@ public class AdminServiceImpl {
     public void deleteAdminById(Long id) {
         adminRepository.deleteById(id);
     }
+
+    @Override
+    public List<Admin> getAdminsByType(AdminType adminType) {
+        Set<Admin> admins = adminRepository.findAllByAdminType(adminType);
+        return new ArrayList<>(admins);
+    }
+
 }
 

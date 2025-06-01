@@ -24,6 +24,11 @@ public class Event {
     private String coverImgURL;
     private String eventLink;
     private Long organizedBy;
+    private boolean published = false;
+    private LocalDateTime autoUnpublishDate;
+    private LocalDateTime registrationDeadline;
+    private int participantCount = 0;
+    private int likeCount = 0;
 
     @ManyToMany
     private Set<Student> students = new HashSet<>();
@@ -113,9 +118,50 @@ public class Event {
         this.organizedBy = organizedBy;
     }
 
+    public boolean isPublished() {
+        return published;
+    }
+
+    public void setPublished(boolean published) {
+        this.published = published;
+    }
+
+    public LocalDateTime getAutoUnpublishDate() {
+        return autoUnpublishDate;
+    }
+
+    public void setAutoUnpublishDate(LocalDateTime autoUnpublishDate) {
+        this.autoUnpublishDate = autoUnpublishDate;
+    }
+
+    public LocalDateTime getRegistrationDeadline() {
+        return registrationDeadline;
+    }
+
+    public void setRegistrationDeadline(LocalDateTime registrationDeadline) {
+        this.registrationDeadline = registrationDeadline;
+    }
+
+    public int getParticipantCount() {
+        return participantCount;
+    }
+
+    public void setParticipantCount(int participantCount) {
+        this.participantCount = participantCount;
+    }
+
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
+
     // Constructors
     public Event(String eventName, String description, String venue, EventType eventType, EventCategory eventCategory,
-                 LocalDateTime eventDate, String coverImgURL, String eventLink, Long organizedBy) {
+                 LocalDateTime eventDate, String coverImgURL, String eventLink, Long organizedBy, LocalDateTime autoUnpublishDate,
+                 LocalDateTime registrationDeadline) {
         setEventName(eventName);
         setDescription(description);
         setVenue(venue);
@@ -125,6 +171,8 @@ public class Event {
         setCoverImgURL(coverImgURL);
         setEventLink(eventLink);
         setOrganizedBy(organizedBy);
+        setAutoUnpublishDate(autoUnpublishDate);
+        setRegistrationDeadline(registrationDeadline);
     }
 
     public Event() { }

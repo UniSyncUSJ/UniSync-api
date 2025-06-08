@@ -30,7 +30,7 @@ public class Event {
     private int participantCount = 0;
     private int likeCount = 0;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "events")
     private Set<Student> students = new HashSet<>();
 
     // Getters and Setters

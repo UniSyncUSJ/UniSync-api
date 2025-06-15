@@ -109,5 +109,17 @@ public class Item {
     }
 
     public Item() { }
+
+    @PrePersist
+    @PreUpdate
+    private void validateSingleSeller() {
+        int count = 0;
+        if (faculty != null) count++;
+        if (department != null) count++;
+        if (society != null) count++;
+        if (count != 1) {
+            throw new IllegalStateException("Exactly one seller must be set for Item.");
+        }
+    }
 }
 

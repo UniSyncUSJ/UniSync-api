@@ -1,9 +1,14 @@
 package com.uniSync.uniSync_api.Controller;
 
+import com.uniSync.uniSync_api.DTO.EventPatchRequest;
 import com.uniSync.uniSync_api.Model.Admin;
+import com.uniSync.uniSync_api.Model.Event;
 import com.uniSync.uniSync_api.Service.AdminService;
+import com.uniSync.uniSync_api.Service.EventServiceImpl;
+import com.uniSync.uniSync_api.config.JwtUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +19,8 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private EventServiceImpl eventServiceImpl;
 
     @PostMapping
     public ResponseEntity<Admin> createAdmin(@RequestBody Admin admin) {
@@ -37,5 +44,17 @@ public class AdminController {
         adminService.deleteAdminById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/api/admin/events/{id}")
+    public ResponseEntity<Event> patchEvent(
+            @PathVariable Long id,
+            @RequestBody EventPatchRequest request,
+            @AuthenticationPrincipal JwtUserDetails userDetails
+    ) {
+        Event updated = eventServiceImpl.patchEventByAdmin(id, request, userDetails);
+        return ResponseEntity.ok(updated);
+    }
+
+
 }
 

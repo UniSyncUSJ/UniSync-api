@@ -2,7 +2,9 @@ package com.uniSync.uniSync_api.Service;
 
 import com.uniSync.uniSync_api.Common.EventCategory;
 import com.uniSync.uniSync_api.Common.EventType;
+import com.uniSync.uniSync_api.DTO.EventPatchRequest;
 import com.uniSync.uniSync_api.Model.Event;
+import com.uniSync.uniSync_api.config.JwtUserDetails;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,4 +20,5 @@ public interface EventService {
     List<Event> getEventsContainingKeyword(String keyword);
     List<Event> getEventsBetween(LocalDateTime start, LocalDateTime end);
     List<Event> getEventsByType(EventType eventType);
+    Event patchEventByAdmin(Long eventId, EventPatchRequest request, JwtUserDetails user);
 }

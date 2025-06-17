@@ -1,0 +1,7 @@
+jwt:
+  secret-key: dev_secret_key_please_change_in_production
+  expiration-time: 86400000  # 1 day in milliseconds
+
+spring:
+  profiles:
+    active: dev 

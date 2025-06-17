@@ -16,13 +16,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-            .authorizeRequests()
-            .requestMatchers("/auth/login", "/").permitAll()
-            .anyRequest().authenticated()
-            .and()
-            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-
+       http.csrf().disable();
+       http.authorizeHttpRequests()
+       .anyRequest().permitAll();
+       http.formLogin().disable();
+       
         return http.build();
     }
 } 

@@ -9,6 +9,7 @@ import com.uniSync.uniSync_api.Model.User;
 import com.uniSync.uniSync_api.Repository.AdminRepository;
 import com.uniSync.uniSync_api.Repository.UserRepository;
 import com.uniSync.uniSync_api.Service.AdminServiceImpl;
+import com.uniSync.uniSync_api.utils.HashUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,40 @@ public class TestController {
 
     @Autowired
     private AdminRepository adminRepository;
+
+    @PostMapping("/create-test-user")
+    public ResponseEntity<String> createTestUser() {
+        User user = new User(
+            "John",
+            "Doe",
+            "john.doe@example.com",
+            "password123",
+            UserRole.STUDENT,
+            "1234567890"
+        );
+        user = userRepository.save(user);
+        return ResponseEntity.ok("Test user created successfully with ID: " + user.getId());
+    }
+
+    @GetMapping("/verify-user/{email}")
+    public ResponseEntity<?> verifyUser(@PathVariable String email) {
+        User user = userRepository.findAll().stream()
+            .filter(u -> u.getEmail().equals(email))
+            .findFirst()
+            .orElse(null);
+
+        if (user == null) {
+            return ResponseEntity.ok("User not found");
+        }
+
+        return ResponseEntity.ok(String.format(
+            "User found:\nID: %d\nEmail: %s\nPassword Hash: %s\nRole: %s",
+            user.getId(),
+            user.getEmail(),
+            user.getPasswordHash(),
+            user.getRole()
+        ));
+    }
 
     @PostMapping("/create-admins")
     public ResponseEntity<String> createAdmin() {

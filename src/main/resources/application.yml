@@ -1,0 +1,7 @@
+jwt:
+  secret-key: ${JWT_SECRET_KEY:X7v9y$B&E)H@McQfTjWnZr4u7x!A%D*G-}
+  expiration-time: 86400000  # 1 day in milliseconds
+
+spring:
+  application:
+    name: uniSync-api 

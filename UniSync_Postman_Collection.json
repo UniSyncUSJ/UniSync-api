@@ -1,0 +1,926 @@
+{
+	"info": {
+		"_postman_id": "uniSync-api-testing",
+		"name": "UniSync API Testing",
+		"description": "Complete API testing collection for UniSync application with all endpoints organized by functionality",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "🔧 Setup & Testing",
+			"item": [
+				{
+					"name": "1. Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/",
+							"host": ["{{base_url}}"],
+							"path": [""]
+						},
+						"description": "Basic health check to verify the application is running"
+					}
+				},
+				{
+					"name": "2. Open Test Endpoint",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/open-test",
+							"host": ["{{base_url}}"],
+							"path": ["open-test"]
+						},
+						"description": "Test endpoint to verify security configuration is working"
+					}
+				},
+				{
+					"name": "3. Create Test User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/test/create-test-user",
+							"host": ["{{base_url}}"],
+							"path": ["test", "create-test-user"]
+						},
+						"description": "Creates a test user for authentication testing"
+					}
+				},
+				{
+					"name": "4. Verify Test User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/test/verify-user/john.doe@example.com",
+							"host": ["{{base_url}}"],
+							"path": ["test", "verify-user", "john.doe@example.com"]
+						},
+						"description": "Verifies the test user was created successfully"
+					}
+				}
+			]
+		},
+		{
+			"name": "🔐 Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/auth/login?email=john.doe@example.com&password=password123",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "login"],
+							"query": [
+								{
+									"key": "email",
+									"value": "john.doe@example.com"
+								},
+								{
+									"key": "password",
+									"value": "password123"
+								}
+							]
+						},
+						"description": "Login with test user credentials. Copy the returned JWT token and set it as the 'token' variable."
+					}
+				}
+			]
+		},
+		{
+			"name": "👥 Users Management",
+			"item": [
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": ["{{base_url}}"],
+							"path": ["users"]
+						},
+						"description": "Get all users (requires authentication)"
+					}
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/1",
+							"host": ["{{base_url}}"],
+							"path": ["users", "1"]
+						},
+						"description": "Get user by ID (requires authentication)"
+					}
+				},
+				{
+					"name": "Get User by Email",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/email?email=john.doe@example.com",
+							"host": ["{{base_url}}"],
+							"path": ["users", "email"],
+							"query": [
+								{
+									"key": "email",
+									"value": "john.doe@example.com"
+								}
+							]
+						},
+						"description": "Get user by email address (requires authentication)"
+					}
+				},
+				{
+					"name": "Get Users by Role",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/role/STUDENT",
+							"host": ["{{base_url}}"],
+							"path": ["users", "role", "STUDENT"]
+						},
+						"description": "Get all users with a specific role (STUDENT, ADMIN, SUPER_ADMIN)"
+					}
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Jane\",\n    \"lastName\": \"Smith\",\n    \"email\": \"jane.smith@example.com\",\n    \"passwordHash\": \"password123\",\n    \"role\": \"STUDENT\",\n    \"phoneNumber\": \"9876543210\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": ["{{base_url}}"],
+							"path": ["users"]
+						},
+						"description": "Create a new user (requires authentication)"
+					}
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"John Updated\",\n    \"lastName\": \"Doe Updated\",\n    \"email\": \"john.doe@example.com\",\n    \"passwordHash\": \"newpassword123\",\n    \"role\": \"STUDENT\",\n    \"phoneNumber\": \"1234567890\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/users/1",
+							"host": ["{{base_url}}"],
+							"path": ["users", "1"]
+						},
+						"description": "Update an existing user (requires authentication)"
+					}
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/1",
+							"host": ["{{base_url}}"],
+							"path": ["users", "1"]
+						},
+						"description": "Delete a user by ID (requires authentication)"
+					}
+				}
+			]
+		},
+		{
+			"name": "🎓 Students Management",
+			"item": [
+				{
+					"name": "Get All Students",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/students",
+							"host": ["{{base_url}}"],
+							"path": ["api", "students"]
+						},
+						"description": "Get all students (requires authentication)"
+					}
+				},
+				{
+					"name": "Get Student by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/students/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "students", "1"]
+						},
+						"description": "Get student by ID (requires authentication)"
+					}
+				},
+				{
+					"name": "Create Student",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\": {\n        \"firstName\": \"Alice\",\n        \"lastName\": \"Johnson\",\n        \"email\": \"alice.johnson@example.com\",\n        \"passwordHash\": \"password123\",\n        \"role\": \"STUDENT\",\n        \"phoneNumber\": \"5551234567\"\n    },\n    \"batchYear\": 2024,\n    \"departments\": [],\n    \"faculty\": {\n        \"id\": 1\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/students",
+							"host": ["{{base_url}}"],
+							"path": ["api", "students"]
+						},
+						"description": "Create a new student (requires authentication)"
+					}
+				},
+				{
+					"name": "Delete Student",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/students/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "students", "1"]
+						},
+						"description": "Delete a student by ID (requires authentication)"
+					}
+				}
+			]
+		},
+		{
+			"name": "🏛️ Faculty Management",
+			"item": [
+				{
+					"name": "Get All Faculties",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/faculties",
+							"host": ["{{base_url}}"],
+							"path": ["api", "faculties"]
+						},
+						"description": "Get all faculties (requires authentication)"
+					}
+				},
+				{
+					"name": "Get Faculty by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/faculties/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "faculties", "1"]
+						},
+						"description": "Get faculty by ID (requires authentication)"
+					}
+				},
+				{
+					"name": "Create Faculty",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Faculty of Engineering\",\n    \"admin\": {\n        \"id\": 1\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/faculties",
+							"host": ["{{base_url}}"],
+							"path": ["api", "faculties"]
+						},
+						"description": "Create a new faculty (requires authentication)"
+					}
+				},
+				{
+					"name": "Delete Faculty",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/faculties/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "faculties", "1"]
+						},
+						"description": "Delete a faculty by ID (requires authentication)"
+					}
+				}
+			]
+		},
+		{
+			"name": "📚 Department Management",
+			"item": [
+				{
+					"name": "Get All Departments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/departments",
+							"host": ["{{base_url}}"],
+							"path": ["api", "departments"]
+						},
+						"description": "Get all departments (requires authentication)"
+					}
+				},
+				{
+					"name": "Get Department by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/departments/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "departments", "1"]
+						},
+						"description": "Get department by ID (requires authentication)"
+					}
+				},
+				{
+					"name": "Create Department",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Computer Engineering\",\n    \"faculty\": {\n        \"id\": 1\n    },\n    \"admin\": {\n        \"id\": 1\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/departments",
+							"host": ["{{base_url}}"],
+							"path": ["api", "departments"]
+						},
+						"description": "Create a new department (requires authentication)"
+					}
+				},
+				{
+					"name": "Delete Department",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/departments/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "departments", "1"]
+						},
+						"description": "Delete a department by ID (requires authentication)"
+					}
+				}
+			]
+		},
+		{
+			"name": "🎉 Events Management",
+			"item": [
+				{
+					"name": "Get All Events",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/events",
+							"host": ["{{base_url}}"],
+							"path": ["api", "events"]
+						},
+						"description": "Get all events (requires authentication)"
+					}
+				},
+				{
+					"name": "Get Event by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/events/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "events", "1"]
+						},
+						"description": "Get event by ID (requires authentication)"
+					}
+				},
+				{
+					"name": "Create Event",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"eventName\": \"Tech Workshop 2024\",\n    \"description\": \"Annual technology workshop for students\",\n    \"venue\": \"Main Auditorium\",\n    \"eventType\": \"PHYSICAL\",\n    \"eventCategory\": \"EDUCATIONAL\",\n    \"eventDate\": \"2024-12-20T10:00:00\",\n    \"coverImgURL\": \"https://example.com/workshop.jpg\",\n    \"eventLink\": \"https://example.com/register\",\n    \"organizedBy\": 1,\n    \"published\": true,\n    \"autoUnpublishDate\": \"2024-12-21T00:00:00\",\n    \"registrationDeadline\": \"2024-12-19T23:59:59\",\n    \"participantCount\": 0,\n    \"likeCount\": 0\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/events",
+							"host": ["{{base_url}}"],
+							"path": ["api", "events"]
+						},
+						"description": "Create a new event (requires authentication)"
+					}
+				},
+				{
+					"name": "Delete Event",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/events/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "events", "1"]
+						},
+						"description": "Delete an event by ID (requires authentication)"
+					}
+				}
+			]
+		},
+		{
+			"name": "🔔 Notifications",
+			"item": [
+				{
+					"name": "Create Event Notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notifications/event?eventId=1&title=New Event&message=Check out the new tech workshop!",
+							"host": ["{{base_url}}"],
+							"path": ["notifications", "event"],
+							"query": [
+								{
+									"key": "eventId",
+									"value": "1"
+								},
+								{
+									"key": "title",
+									"value": "New Event"
+								},
+								{
+									"key": "message",
+									"value": "Check out the new tech workshop!"
+								}
+							]
+						},
+						"description": "Create a notification for a specific event (requires authentication)"
+					}
+				},
+				{
+					"name": "Create Entity Notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notifications/entity?targetType=STUDENT&targetId=1&title=Welcome&message=Welcome to UniSync!",
+							"host": ["{{base_url}}"],
+							"path": ["notifications", "entity"],
+							"query": [
+								{
+									"key": "targetType",
+									"value": "STUDENT"
+								},
+								{
+									"key": "targetId",
+									"value": "1"
+								},
+								{
+									"key": "title",
+									"value": "Welcome"
+								},
+								{
+									"key": "message",
+									"value": "Welcome to UniSync!"
+								}
+							]
+						},
+						"description": "Create a notification for a specific entity (requires authentication)"
+					}
+				},
+				{
+					"name": "Get Unread Notifications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notifications/unread/1?limit=10",
+							"host": ["{{base_url}}"],
+							"path": ["notifications", "unread", "1"],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Get unread notifications for a student (requires authentication)"
+					}
+				},
+				{
+					"name": "Mark Notification as Read",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notifications/mark-read/1",
+							"host": ["{{base_url}}"],
+							"path": ["notifications", "mark-read", "1"]
+						},
+						"description": "Mark a notification as read (requires authentication)"
+					}
+				}
+			]
+		},
+		{
+			"name": "👨‍💼 Admin Management",
+			"item": [
+				{
+					"name": "Get All Admins",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admins",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admins"]
+						},
+						"description": "Get all admins (requires authentication)"
+					}
+				},
+				{
+					"name": "Get Admin by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admins/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admins", "1"]
+						},
+						"description": "Get admin by ID (requires authentication)"
+					}
+				},
+				{
+					"name": "Create Admin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\": {\n        \"id\": 1\n    },\n    \"adminType\": \"DEPARTMENT_ADMIN\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admins",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admins"]
+						},
+						"description": "Create a new admin (requires authentication)"
+					}
+				},
+				{
+					"name": "Delete Admin",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admins/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admins", "1"]
+						},
+						"description": "Delete an admin by ID (requires authentication)"
+					}
+				}
+			]
+		},
+		{
+			"name": "🏛️ Societies Management",
+			"item": [
+				{
+					"name": "Get All Societies",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/societies",
+							"host": ["{{base_url}}"],
+							"path": ["api", "societies"]
+						},
+						"description": "Get all societies (requires authentication)"
+					}
+				},
+				{
+					"name": "Get Society by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/societies/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "societies", "1"]
+						},
+						"description": "Get society by ID (requires authentication)"
+					}
+				},
+				{
+					"name": "Create Society",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Computer Science Society\",\n    \"description\": \"Society for CS students\",\n    \"faculty\": {\n        \"id\": 1\n    },\n    \"admin\": {\n        \"id\": 1\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/societies",
+							"host": ["{{base_url}}"],
+							"path": ["api", "societies"]
+						},
+						"description": "Create a new society (requires authentication)"
+					}
+				},
+				{
+					"name": "Delete Society",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/societies/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "societies", "1"]
+						},
+						"description": "Delete a society by ID (requires authentication)"
+					}
+				}
+			]
+		},
+		{
+			"name": "🧪 Test Data Creation",
+			"item": [
+				{
+					"name": "Create Test Admins",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/test/create-admins",
+							"host": ["{{base_url}}"],
+							"path": ["test", "create-admins"]
+						},
+						"description": "Creates test admin users for testing purposes"
+					}
+				},
+				{
+					"name": "Create Department with Admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/test/create-department-with-admin?facultyAdminId=1&deptAdminId=2",
+							"host": ["{{base_url}}"],
+							"path": ["test", "create-department-with-admin"],
+							"query": [
+								{
+									"key": "facultyAdminId",
+									"value": "1"
+								},
+								{
+									"key": "deptAdminId",
+									"value": "2"
+								}
+							]
+						},
+						"description": "Creates a department with associated admins for testing"
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"description": "Base URL for the UniSync API"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"description": "JWT token obtained from login. Copy the token from the login response and paste it here."
+		}
+	]
+} 

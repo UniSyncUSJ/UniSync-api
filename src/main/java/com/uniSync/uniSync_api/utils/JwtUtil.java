@@ -2,8 +2,10 @@ package com.uniSync.uniSync_api.utils;
 
 import com.uniSync.uniSync_api.config.JwtProperties;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 import java.util.Date;
+import java.nio.charset.StandardCharsets;
 
 @Component
 public class JwtUtil {
@@ -21,13 +23,14 @@ public class JwtUtil {
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtProperties.getExpirationTime()))
-                .signWith(SignatureAlgorithm.HS512, jwtProperties.getSecretKey())
+                .signWith(Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8)))
                 .compact();
     }
 
     public String extractUsername(String token) {
-        return Jwts.parser()
-                .setSigningKey(jwtProperties.getSecretKey())
+        return Jwts.parserBuilder()
+                .setSigningKey(Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8)))
+                .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
@@ -35,7 +38,10 @@ public class JwtUtil {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(jwtProperties.getSecretKey()).parseClaimsJws(token);
+            Jwts.parserBuilder()
+                .setSigningKey(Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8)))
+                .build()
+                .parseClaimsJws(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
             return false;

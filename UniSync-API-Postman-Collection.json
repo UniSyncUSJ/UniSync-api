@@ -1,0 +1,557 @@
+{
+  "info": {
+    "name": "UniSync API Test Collection",
+    "description": "Complete Postman collection for testing all UniSync API endpoints",
+    "version": "1.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "Hello World",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                ""
+              ]
+            },
+            "description": "Test the basic hello endpoint to verify the API is running"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login - Valid Credentials",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "johndoe@example.com",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "john123",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Login with valid credentials. Note: You need to create users first using the test endpoints."
+          },
+          "response": []
+        },
+        {
+          "name": "Login - Invalid Credentials",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "invalid@example.com",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "wrongpassword",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Test login with invalid credentials to verify error handling"
+          },
+          "response": []
+        },
+        {
+          "name": "Login - Missing Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "password",
+                  "value": "john123",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Test login with missing email parameter"
+          },
+          "response": []
+        },
+        {
+          "name": "Login - Missing Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "johndoe@example.com",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Test login with missing password parameter"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Test Endpoints",
+      "item": [
+        {
+          "name": "Create Test Admins",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test for successful admin creation",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains admin IDs\", function () {",
+                  "    var responseText = pm.response.text();",
+                  "    pm.expect(responseText).to.include(\"Admins created successfully with ID:\");",
+                  "});",
+                  "",
+                  "// Extract admin IDs from response and set as environment variables",
+                  "var responseText = pm.response.text();",
+                  "var lines = responseText.split('\\n');",
+                  "if (lines.length >= 2) {",
+                  "    var adminId1 = lines[1].trim();",
+                  "    var adminId2 = lines[2].trim();",
+                  "    pm.environment.set(\"admin_id_1\", adminId1);",
+                  "    pm.environment.set(\"admin_id_2\", adminId2);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/test/create-admins",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "test",
+                "create-admins"
+              ]
+            },
+            "description": "Create test admin users. This endpoint creates:\n1. John Doe (johndoe@example.com) - Department Admin\n2. John Adams (johnadams@example.com) - Faculty Admin\n\nBoth users have password 'john123'"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Department with Admin - Valid IDs",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Department created successfully\", function () {",
+                  "    var responseText = pm.response.text();",
+                  "    pm.expect(responseText).to.include(\"Department created under Admin ID:\");",
+                  "    pm.expect(responseText).to.include(\"Department ID:\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "facultyAdminId",
+                  "value": "{{admin_id_2}}",
+                  "type": "text",
+                  "description": "Faculty Admin ID (John Adams)"
+                },
+                {
+                  "key": "deptAdminId",
+                  "value": "{{admin_id_1}}",
+                  "type": "text",
+                  "description": "Department Admin ID (John Doe)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/test/create-department-with-admin",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "test",
+                "create-department-with-admin"
+              ]
+            },
+            "description": "Create a department with admin. This creates:\n1. Science Faculty with Faculty Admin\n2. Computer Science Department under the Faculty with Department Admin\n\nUse the admin IDs from the create-admins endpoint."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Department with Admin - Invalid Faculty Admin ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Error message for invalid faculty admin ID\", function () {",
+                  "    var responseText = pm.response.text();",
+                  "    pm.expect(responseText).to.include(\"not found\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "facultyAdminId",
+                  "value": "999",
+                  "type": "text",
+                  "description": "Invalid Faculty Admin ID"
+                },
+                {
+                  "key": "deptAdminId",
+                  "value": "{{admin_id_1}}",
+                  "type": "text",
+                  "description": "Valid Department Admin ID"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/test/create-department-with-admin",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "test",
+                "create-department-with-admin"
+              ]
+            },
+            "description": "Test with invalid faculty admin ID to verify error handling"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Department with Admin - Invalid Department Admin ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Error message for invalid department admin ID\", function () {",
+                  "    var responseText = pm.response.text();",
+                  "    pm.expect(responseText).to.include(\"not found\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "facultyAdminId",
+                  "value": "{{admin_id_2}}",
+                  "type": "text",
+                  "description": "Valid Faculty Admin ID"
+                },
+                {
+                  "key": "deptAdminId",
+                  "value": "999",
+                  "type": "text",
+                  "description": "Invalid Department Admin ID"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/test/create-department-with-admin",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "test",
+                "create-department-with-admin"
+              ]
+            },
+            "description": "Test with invalid department admin ID to verify error handling"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Department with Admin - Missing Parameters",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "facultyAdminId",
+                  "value": "{{admin_id_2}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/test/create-department-with-admin",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "test",
+                "create-department-with-admin"
+              ]
+            },
+            "description": "Test with missing deptAdminId parameter"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Integration Tests",
+      "item": [
+        {
+          "name": "Full Workflow Test",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// This test runs after creating admins and departments",
+                  "// It tests the full workflow"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "johndoe@example.com",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "john123",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Test login after creating users through the test endpoints"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Global pre-request script",
+          "// Add any global setup here"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Global test script",
+          "// Add any global tests here"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "admin_id_1",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "admin_id_2",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
